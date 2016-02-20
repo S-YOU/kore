@@ -74,18 +74,18 @@ char		*http_body_disk_path = HTTP_BODY_DISK_PATH;
 void
 http_init(void)
 {
-	int		prealloc, l;
+	int		prealloc, l = 0;
 
 	TAILQ_INIT(&http_requests);
 	TAILQ_INIT(&http_requests_sleeping);
 
 	header_buf = kore_buf_create(1024);
 
-	l = snprintf(http_version, sizeof(http_version),
-	    "server: kore (%d.%d.%d-%s)\r\n", KORE_VERSION_MAJOR,
-	    KORE_VERSION_MINOR, KORE_VERSION_PATCH, KORE_VERSION_STATE);
-	if (l == -1 || (size_t)l >= sizeof(http_version))
-		fatal("http_init(): http_version buffer too small");
+	// l = snprintf(http_version, sizeof(http_version),
+	//     "server: kore (%d.%d.%d-%s)\r\n", KORE_VERSION_MAJOR,
+	//     KORE_VERSION_MINOR, KORE_VERSION_PATCH, KORE_VERSION_STATE);
+	// if (l == -1 || (size_t)l >= sizeof(http_version))
+	// 	fatal("http_init(): http_version buffer too small");
 
 	http_version_len = l;
 
@@ -1412,10 +1412,10 @@ http_response_normal(struct http_request *req, struct connection *c,
 	/* Note that req CAN be NULL. */
 	if (req != NULL && req->owner->proto != CONN_PROTO_WEBSOCKET) {
 		if (http_keepalive_time && connection_close == 0) {
-			kore_buf_appendf(header_buf,
-			    "connection: keep-alive\r\n");
-			kore_buf_appendf(header_buf,
-			    "keep-alive: timeout=%d\r\n", http_keepalive_time);
+			// kore_buf_appendf(header_buf,
+			//     "connection: keep-alive\r\n");
+			// kore_buf_appendf(header_buf,
+			//     "keep-alive: timeout=%d\r\n", http_keepalive_time);
 		} else {
 			c->flags |= CONN_CLOSE_EMPTY;
 			kore_buf_appendf(header_buf, "connection: close\r\n");
